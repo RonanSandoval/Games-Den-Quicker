@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    int maxMapWidth = 8;
-    int maxMapHeight = 8;
+    public int maxMapWidth = 8;
+    public int maxMapHeight = 8;
 
     public class Room {
         public int level;
@@ -22,10 +22,9 @@ public class MapGenerator : MonoBehaviour
         }
     } 
 
-    Room[,] map;
+    public Room[,] map;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         generateMap();
         Print2DArray();
