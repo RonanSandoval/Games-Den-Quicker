@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     public MapGenerator mapGen;
     private int roomHeight;
     private int roomWidth;
-
     public TileMaker tileMaker;
 
     public int playerSpeed;
@@ -18,6 +17,13 @@ public class Player : MonoBehaviour
 
     public GameObject attack;
 
+    public int maxHealth;
+    public int health;
+    public bool[] upgrades;
+
+    public bool invincible;
+    float invincibleCooldown;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,15 +32,26 @@ public class Player : MonoBehaviour
         roomHeight = tileMaker.roomHeight;
         roomWidth = tileMaker.roomWidth;
         currentRoom = mapGen.startingPoint;
-        transform.position = new Vector3(currentRoom[1] * roomWidth + (roomWidth / 2), currentRoom[0] * roomHeight + (roomHeight / 2), 0);   
+        transform.position = new Vector3(currentRoom[1] * roomWidth + (roomWidth / 2), currentRoom[0] * roomHeight + (roomHeight / 2), 0); 
+
+        health = maxHealth;  
     }
 
     // Update is called once per frame
     void Update()
     {
-        move();   
+        if (!invincible) {
+            move();
+        }   
         detectCurrentRoom();
         detectAttack();
+
+        if (invincibleCooldown > 0) {
+            invincibleCooldown -= Time.deltaTime;
+            if (invincibleCooldown <= 0) {
+                invincible = false;
+            }
+        }
     }
 
     void move() {
@@ -53,5 +70,24 @@ public class Player : MonoBehaviour
             GameObject attackObject = Instantiate(attack, transform.position, Quaternion.identity) as GameObject;
 
         }
+    }
+
+    public void onHit(int damage, Vector3 hitDirection) {
+        invincible = true;
+        invincibleCooldown = 0.5f;
+        health -= damage;
+        Debug.Log(health);
+
+        if (health <= 0) {
+            die();
+        }
+
+        Vector3 knockDirection = transform.position - hitDirection;
+        Debug.Log(knockDirection);
+        rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
+    }
+
+    void die() {
+        Destroy(gameObject);
     }
 }

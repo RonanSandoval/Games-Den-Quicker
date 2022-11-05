@@ -35,9 +35,13 @@ public class Attack : MonoBehaviour
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
-        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.tag == "wall")
         {
+            Destroy (gameObject);
+        }
+        else if (collision.gameObject.tag == "enemy")
+        {
+            collision.GetComponent<Enemy>().onHit(1);
             Destroy (gameObject);
         }
     }  

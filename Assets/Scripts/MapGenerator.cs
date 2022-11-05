@@ -9,18 +9,37 @@ public class MapGenerator : MonoBehaviour
 
     public int[] startingPoint;
 
+    public struct Entity {
+        public int x;
+        public int y;
+        public int type;
+
+        public Entity(int myX, int myY, int myType) {
+            x = myX;
+            y = myY;
+            type = myType;
+        }
+    }
+
     public class Room {
         public int level;
         public bool[] doors;
 
+        public List<Entity> enemies;
+        public List<Entity> things;
+
         public Room(int myLevel, bool[] myDoors) {
             level = myLevel;
             doors = myDoors;
+            enemies = new List<Entity>();
+            things = new List<Entity>();
         }
 
         public Room() {
             level = 0;
             doors = new bool[4];
+            enemies = new List<Entity>();
+            things = new List<Entity>();
         }
     } 
 
@@ -41,7 +60,6 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        int level = 1;
         int[] keyCoords = createInitial();
         createPath(2, Random.Range(2,5), keyCoords);
         keyCoords = createBranchPoint(4);
@@ -50,6 +68,8 @@ public class MapGenerator : MonoBehaviour
         createPath(8, Random.Range(2,5), keyCoords);
         keyCoords = createBranchPoint(10);
         createPath(11, Random.Range(2,5), keyCoords);
+
+        placeEnemies();
 
     }
 
@@ -182,6 +202,16 @@ public class MapGenerator : MonoBehaviour
                         break;
                 }
                 return tryCoords;
+            }
+        }
+    }
+
+    public void placeEnemies() {
+        for (int i = 0; i < maxMapHeight; i++) {
+            for (int j = 0; j < maxMapWidth; j++) {
+                if (map[i,j].level % 3 == 2) {
+                    map[i,j].enemies.Add(new Entity(3,3,0));
+                }
             }
         }
     }
