@@ -8,6 +8,7 @@ public class MapGenerator : MonoBehaviour
     public int maxMapHeight = 8;
 
     public int[] startingPoint;
+    public int[] upgradeOrder;
 
     public struct Entity {
         public int x;
@@ -47,6 +48,9 @@ public class MapGenerator : MonoBehaviour
 
     void Awake()
     {
+        upgradeOrder = new int[]{0,1,2};
+        shuffleUpgrades();
+
         generateMap();
         Print2DArray();
 
@@ -241,4 +245,14 @@ public class MapGenerator : MonoBehaviour
             Debug.Log(line);
         }
     }
+
+    // https://answers.unity.com/questions/1189736/im-trying-to-shuffle-an-arrays-order.html
+    public void shuffleUpgrades() {
+         for (int i = 0; i < upgradeOrder.Length; i++) {
+             int rnd = Random.Range(0, upgradeOrder.Length);
+             int tempInt = upgradeOrder[rnd];
+             upgradeOrder[rnd] = upgradeOrder[i];
+             upgradeOrder[i] = tempInt;
+         }
+     }
 }

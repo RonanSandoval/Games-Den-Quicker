@@ -29,6 +29,13 @@ public class ThingSpawner : MonoBehaviour
                     GameObject newThing = Instantiate(thingTypes[entity.type], thingPosition, Quaternion.identity) as GameObject;
                     newThing.transform.parent = gameObject.transform;
                 }
+
+                if (map[i,j].level != 0 && map[i,j].level != 12 && map[i,j].level % 3 == 0) {
+                    Vector3 thingPosition = new Vector3(j * roomWidth + (roomWidth/2), i * roomHeight + (roomHeight/2), 0);
+                    GameObject newThing = Instantiate(thingTypes[2], thingPosition, Quaternion.identity) as GameObject;
+                    newThing.GetComponent<Upgrade>().upgradeType = mapGen.upgradeOrder[(map[i,j].level / 3) - 1];
+                    newThing.transform.parent = gameObject.transform;
+                }
             }
         }
     }
