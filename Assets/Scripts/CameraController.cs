@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
 
     public TileMaker tileMaker;
     public MapGenerator mapGen;
+    public Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,6 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(currentX * roomWidth + (roomWidth / 2), currentY * roomHeight + (roomHeight / 2), -10), Time.deltaTime * 8);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(player.currentRoom[0] * roomWidth + (roomWidth / 2), player.currentRoom[1] * roomHeight + (roomHeight / 2), -10), Time.deltaTime * 8);
     }
 }
