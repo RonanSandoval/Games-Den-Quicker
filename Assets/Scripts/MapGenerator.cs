@@ -70,6 +70,7 @@ public class MapGenerator : MonoBehaviour
         createPath(11, Random.Range(2,5), keyCoords);
 
         placeEnemies();
+        placeThings();
 
     }
 
@@ -215,6 +216,17 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
+
+    public void placeThings() {
+        for (int i = 0; i < maxMapHeight; i++) {
+            for (int j = 0; j < maxMapWidth; j++) {
+                if (map[i,j].level % 3 == 2) {
+                    map[i,j].things.Add(new Entity(5,5,0));
+                }
+            }
+        }
+    }
+
 
     public void Print2DArray()
     {

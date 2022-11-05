@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
 
     void spawnRoom(int[] roomCoords) { 
         foreach (MapGenerator.Entity entity in mapGen.map[roomCoords[1], roomCoords[0]].enemies) {
-             Vector3 enemyPosition = new Vector3(roomCoords[0] * roomWidth + entity.x, roomCoords[1] * roomHeight + entity.y, 0);
+            Vector3 enemyPosition = new Vector3(roomCoords[0] * roomWidth + entity.x, roomCoords[1] * roomHeight + entity.y, 0);
             GameObject newEnemy = Instantiate(enemyTypes[entity.type], enemyPosition, Quaternion.identity) as GameObject;
             newEnemy.transform.parent = gameObject.transform;
 
