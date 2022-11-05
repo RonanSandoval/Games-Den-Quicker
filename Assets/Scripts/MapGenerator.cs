@@ -7,6 +7,8 @@ public class MapGenerator : MonoBehaviour
     public int maxMapWidth = 8;
     public int maxMapHeight = 8;
 
+    public int[] startingPoint;
+
     public class Room {
         public int level;
         public bool[] doors;
@@ -76,6 +78,7 @@ public class MapGenerator : MonoBehaviour
 
     int[] createInitial() {
         int[] start = new int[]{Random.Range(0, maxMapHeight), Random.Range(0, maxMapWidth)};
+        startingPoint = new int[]{start[0], start[1]};
         map[start[0], start[1]].level = 1;
         
         int direction = randomDirection(start);

@@ -32,8 +32,8 @@ public class TileMaker : MonoBehaviour
         int scaledOffX = offsetX * roomWidth;
         int scaledOffY = offsetY * roomHeight;
 
-        for (int x = 1 + scaledOffX; x < roomWidth - 1 + scaledOffX; x++) {
-            for (int y = 1 + scaledOffY; y < roomHeight - 1 + scaledOffY; y++) {
+        for (int x = scaledOffX; x < roomWidth + scaledOffX; x++) {
+            for (int y = scaledOffY; y < roomHeight + scaledOffY; y++) {
                 groundMap.SetTile(new Vector3Int(x,y,0), floor);
             }
         } 
