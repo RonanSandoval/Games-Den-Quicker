@@ -34,7 +34,8 @@ public class Player : MonoBehaviour
         currentRoom = mapGen.startingPoint;
         transform.position = new Vector3(currentRoom[1] * roomWidth + (roomWidth / 2), currentRoom[0] * roomHeight + (roomHeight / 2), 0); 
 
-        health = maxHealth;  
+        health = maxHealth;
+        upgrades = new bool[]{false, false, false};
     }
 
     // Update is called once per frame
@@ -68,13 +69,14 @@ public class Player : MonoBehaviour
     void detectAttack() {
         if (Input.GetMouseButtonDown(0)) {
             GameObject attackObject = Instantiate(attack, transform.position, Quaternion.identity) as GameObject;
+            attackObject.GetComponent<Attack>().sharpened = upgrades[0];
 
         }
     }
 
     public void onHit(int damage, Vector3 hitDirection) {
         invincible = true;
-        invincibleCooldown = 0.5f;
+        invincibleCooldown = 0.3f;
         health -= damage;
         Debug.Log(health);
 

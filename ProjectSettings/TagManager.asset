@@ -6,6 +6,8 @@ TagManager:
   tags:
   - wall
   - enemy
+  - crate
+  - spikes
   layers:
   - Default
   - TransparentFX

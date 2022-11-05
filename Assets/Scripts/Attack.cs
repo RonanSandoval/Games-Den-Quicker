@@ -8,6 +8,7 @@ public class Attack : MonoBehaviour
     public float shotSpeed;
 
     public float lifespan;
+    public bool sharpened;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,13 @@ public class Attack : MonoBehaviour
         else if (collision.gameObject.tag == "enemy")
         {
             collision.GetComponent<Enemy>().onHit(1);
+            Destroy (gameObject);
+        }
+        else if (collision.gameObject.tag == "crate")
+        {
+            if (sharpened) {
+                collision.GetComponent<Crate>().onHit();
+            }
             Destroy (gameObject);
         }
     }  
