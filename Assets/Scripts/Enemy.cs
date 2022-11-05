@@ -40,14 +40,34 @@ public class Enemy : MonoBehaviour
                 if (!invincible) {
                     Vector3 moveDirection =  player.transform.position - transform.position;
                     moveDirection.Normalize();
-                    rb.velocity = moveDirection * Time.deltaTime * 800;
+                    rb.velocity = moveDirection * Time.deltaTime * 500;
+                }
+                break;
+            case 2:
+                rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+                if (Mathf.Abs(player.transform.position.y - transform.position.y) > 0.2f) {
+                    if (player.transform.position.y - transform.position.y > 0) {
+                        rb.velocity = new Vector3(0, Time.deltaTime * 2000, 0);
+                    } else {
+                        rb.velocity = new Vector3(0, Time.deltaTime * -2000, 0);
+                    }
+                }
+                break;
+            case 3:
+                rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                if (Mathf.Abs(player.transform.position.x - transform.position.x) > 0.2f) {
+                    if (player.transform.position.x - transform.position.x > 0) {
+                        rb.velocity = new Vector3(Time.deltaTime * 2000, 0, 0);
+                    } else {
+                        rb.velocity = new Vector3(Time.deltaTime * -2000, 0, 0);
+                    }
                 }
                 break;
         }
     }
 
     public void onHit(int damage, Vector3 hitDirection) {
-        if (!invincible) {
+        if (!invincible && ai != 2 && ai != 3) {
             invincible = true;
             invincibleCooldown = 0.3f;
 

@@ -222,7 +222,7 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
                 if (map[i,j].level % 3 == 2) {
-                    map[i,j].enemies.Add(new Entity(3,3,0));
+                    map[i,j].enemies.Add(new Entity(3,3,1));
                 }
             }
         }
@@ -242,7 +242,20 @@ public class MapGenerator : MonoBehaviour
 
                     // if a dodger...
                     if (barricadeType == 2) {
-
+                        switch(barricadeDirection) {
+                            case 0:
+                                map[i,j].enemies.Add(new Entity(6.5f,3.5f, 3));
+                                break;
+                            case 1:
+                                map[i,j].enemies.Add(new Entity(6.5f,8.5f, 3));
+                                break;
+                            case 2:
+                                map[i,j].enemies.Add(new Entity(3.5f,5.5f, 2));
+                                break;
+                            case 3:
+                                map[i,j].enemies.Add(new Entity(10.5f,5.5f, 2));
+                                break;
+                        }
                     } else {
                         switch(barricadeDirection) {
                             case 0:

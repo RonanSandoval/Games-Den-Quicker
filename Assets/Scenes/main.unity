@@ -308,8 +308,7 @@ MonoBehaviour:
   mapGen: {fileID: 1718288010}
   tileMaker: {fileID: 1147924293}
   player: {fileID: 439361176}
-  enemyTypes:
-  - {fileID: 2446798359482428624, guid: 9d72450dc78662e45ac25203bc9e2ed6, type: 3}
+  enemyObject: {fileID: 2446798359482428624, guid: 9d72450dc78662e45ac25203bc9e2ed6, type: 3}
   spawnedRoom: 
 --- !u!4 &580294727
 Transform:

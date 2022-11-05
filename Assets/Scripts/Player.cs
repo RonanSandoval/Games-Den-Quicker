@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
         }   
         detectCurrentRoom();
         detectAttack();
+        detectDash();
 
         if (invincibleCooldown > 0) {
             invincibleCooldown -= Time.deltaTime;
@@ -59,6 +60,19 @@ public class Player : MonoBehaviour
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
         rb.velocity = new Vector2(horizontalInput * playerSpeed, verticalInput * playerSpeed);
+    }
+
+    void detectDash() {
+        if (upgrades[2] && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))) {
+            invincible = true;
+            invincibleCooldown = 0.3f;
+            Vector3 dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            dashDirection.z = 0.0f;
+            dashDirection.Normalize();
+            rb.AddForce(dashDirection * 60, ForceMode2D.Impulse);
+
+        }
+        
     }
 
     void detectCurrentRoom() {
