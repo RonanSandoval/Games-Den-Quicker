@@ -20,7 +20,12 @@ public class Attack : MonoBehaviour
         shootDirection.Normalize();
         transform.rotation = Quaternion.LookRotation(Vector3.forward, shootDirection);
 
-        lifespan = 0.3f;
+        if (!sharpened) {
+            lifespan = 0.15f;
+        } else {
+            lifespan = 0.23f;
+        }
+        
     }
 
     // Update is called once per frame
@@ -42,7 +47,7 @@ public class Attack : MonoBehaviour
         }
         else if (collision.gameObject.tag == "enemy")
         {
-            collision.GetComponent<Enemy>().onHit(1);
+            collision.GetComponent<Enemy>().onHit(1, transform.position);
             Destroy (gameObject);
         }
         else if (collision.gameObject.tag == "crate")
