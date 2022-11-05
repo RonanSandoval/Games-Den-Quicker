@@ -50,13 +50,7 @@ public class Player : MonoBehaviour
 
     void detectAttack() {
         if (Input.GetMouseButtonDown(0)) {
-            // https://forum.unity.com/threads/get-vector-that-points-from-an-object-to-my-mouse.143980/
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 direction = mousePos - transform.position;
-            direction.Normalize();
-
-            var pointAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Instantiate(attack, transform.position, Quaternion.LookRotation(Vector3.forward, mousePos - transform.position));
+            GameObject attackObject = Instantiate(attack, transform.position, Quaternion.identity) as GameObject;
 
         }
     }
