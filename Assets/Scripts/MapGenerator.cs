@@ -11,11 +11,11 @@ public class MapGenerator : MonoBehaviour
     public int[] upgradeOrder;
 
     public struct Entity {
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public int type;
 
-        public Entity(int myX, int myY, int myType) {
+        public Entity(float myX, float myY, int myType) {
             x = myX;
             y = myY;
             type = myType;
@@ -25,6 +25,7 @@ public class MapGenerator : MonoBehaviour
     public class Room {
         public int level;
         public bool[] doors;
+        public int barricadeDirection;
 
         public List<Entity> enemies;
         public List<Entity> things;
@@ -34,6 +35,7 @@ public class MapGenerator : MonoBehaviour
             doors = myDoors;
             enemies = new List<Entity>();
             things = new List<Entity>();
+            barricadeDirection = -1;
         }
 
         public Room() {
@@ -41,6 +43,7 @@ public class MapGenerator : MonoBehaviour
             doors = new bool[4];
             enemies = new List<Entity>();
             things = new List<Entity>();
+            barricadeDirection = -1;
         }
     } 
 
@@ -188,21 +191,25 @@ public class MapGenerator : MonoBehaviour
                     case 0:
                         map[tryCoords[0], tryCoords[1]].doors[0] = true;
                         map[tryCoords[0] - 1, tryCoords[1]].doors[1] = true;
+                        map[tryCoords[0], tryCoords[1]].barricadeDirection = 0;
                         tryCoords[0] -= 1;
                         break;
                     case 1:
                         map[tryCoords[0], tryCoords[1]].doors[1] = true;
                         map[tryCoords[0] + 1, tryCoords[1]].doors[0] = true;
+                        map[tryCoords[0], tryCoords[1]].barricadeDirection = 1;
                         tryCoords[0] += 1;
                         break;
                     case 2:
                         map[tryCoords[0], tryCoords[1]].doors[2] = true;
                         map[tryCoords[0], tryCoords[1] - 1].doors[3] = true;
+                        map[tryCoords[0], tryCoords[1]].barricadeDirection = 2;
                         tryCoords[1] -= 1;
                         break;
                     case 3:
                         map[tryCoords[0], tryCoords[1]].doors[3] = true;
                         map[tryCoords[0], tryCoords[1] + 1].doors[2] = true;
+                        map[tryCoords[0], tryCoords[1]].barricadeDirection = 3;
                         tryCoords[1] += 1;
                         break;
                 }
@@ -226,6 +233,36 @@ public class MapGenerator : MonoBehaviour
             for (int j = 0; j < maxMapWidth; j++) {
                 if (map[i,j].level % 3 == 2) {
                     map[i,j].things.Add(new Entity(5,5,0));
+                }
+                // create barricades
+                if (map[i,j].level != 1 && map[i,j].level % 3 == 1) {
+                    
+                    int barricadeDirection = map[i,j].barricadeDirection;
+                    int barricadeType = upgradeOrder[(map[i,j].level / 3) - 1];
+
+                    // if a dodger...
+                    if (barricadeType == 2) {
+
+                    } else {
+                        switch(barricadeDirection) {
+                            case 0:
+                                map[i,j].things.Add(new Entity(6.5f,1.5f, barricadeType));
+                                map[i,j].things.Add(new Entity(7.5f,1.5f, barricadeType));
+                                break;
+                            case 1:
+                                map[i,j].things.Add(new Entity(6.5f,10.5f, barricadeType));
+                                map[i,j].things.Add(new Entity(7.5f,10.5f, barricadeType));
+                                break;
+                            case 2:
+                                map[i,j].things.Add(new Entity(1.5f,5.5f, barricadeType));
+                                map[i,j].things.Add(new Entity(1.5f,6.5f, barricadeType));
+                                break;
+                            case 3:
+                                map[i,j].things.Add(new Entity(12.5f,5.5f, barricadeType));
+                                map[i,j].things.Add(new Entity(12.5f,6.5f, barricadeType));
+                                break;
+                        }
+                    }
                 }
             }
         }
