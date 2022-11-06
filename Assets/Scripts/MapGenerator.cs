@@ -222,7 +222,8 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
                 if (map[i,j].level % 3 == 2) {
-                    map[i,j].enemies.Add(new Entity(3,3,1));
+                    map[i,j].enemies.Add(new Entity(3,3,0));
+                    map[i,j].enemies.Add(new Entity(6.5f,3.5f, 3));
                 }
             }
         }

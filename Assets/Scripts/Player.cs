@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public MapGenerator mapGen;
-    private int roomHeight;
-    private int roomWidth;
+    public int roomHeight;
+    public int roomWidth;
     public TileMaker tileMaker;
 
     public int playerSpeed;

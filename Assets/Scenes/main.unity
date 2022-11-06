@@ -308,7 +308,12 @@ MonoBehaviour:
   mapGen: {fileID: 1718288010}
   tileMaker: {fileID: 1147924293}
   player: {fileID: 439361176}
-  enemyObject: {fileID: 2446798359482428624, guid: 9d72450dc78662e45ac25203bc9e2ed6, type: 3}
+  enemyTypes:
+  - {fileID: 2446798359482428624, guid: 9d72450dc78662e45ac25203bc9e2ed6, type: 3}
+  - {fileID: 0}
+  - {fileID: 4206290710653687612, guid: 5c05b2ca0f079da46b6bcfb7dc3a2214, type: 3}
+  - {fileID: 2139186907262097738, guid: 94240bbdd299a59469ac11376176ff40, type: 3}
+  - {fileID: 0}
   spawnedRoom: 
 --- !u!4 &580294727
 Transform:
@@ -716,8 +721,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundMap: {fileID: 1601553042}
   wallMap: {fileID: 717569547}
-  floor: {fileID: 11400000, guid: 176e2446126e6464586046ad526b9175, type: 2}
-  wall: {fileID: 11400000, guid: a6c77c80468cde34d9fd10198919e3e2, type: 2}
+  floor: {fileID: 11400000, guid: 67dfc974f7ef72249967441eef2343dc, type: 2}
+  wall: {fileID: 11400000, guid: 4bbe6504cf17f9b41a249cf6246da98c, type: 2}
   roomWidth: 14
   roomHeight: 12
   mapGen: {fileID: 1718288010}
