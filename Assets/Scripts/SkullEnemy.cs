@@ -21,7 +21,7 @@ public class SkullEnemy : Enemy
 
     protected override void Update() {
          if (player.timeStop <= 0) {
-            rb.velocity = moveDirection * Time.deltaTime * 1000;
+            rb.velocity = moveDirection * 6;
         }
 
         base.Update();

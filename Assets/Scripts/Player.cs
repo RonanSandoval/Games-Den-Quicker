@@ -32,11 +32,14 @@ public class Player : MonoBehaviour
     public float timestopCooldown;
     public float timeStop;
 
+    GameController gc;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        gc = GameObject.Find("GameController").GetComponent<GameController>();
 
         roomHeight = tileMaker.roomHeight;
         roomWidth = tileMaker.roomWidth;
@@ -54,41 +57,49 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (knockbackCooldown <= 0f) {
-            move();
-        }   
         detectCurrentRoom();
-        detectAttack();
-        detectTimeStop();
+        if (gc.currentState == GameController.GameState.Playing) {
+            if (knockbackCooldown <= 0f) {
+                move();
+            }   
+            
+            detectAttack();
+            detectTimeStop();
 
-        if (invincibleCooldown > 0) {
-            invincibleCooldown -= Time.deltaTime;
-            if (invincibleCooldown <= 0) {
-                invincible = false;
+            if (invincibleCooldown > 0) {
+                invincibleCooldown -= Time.deltaTime;
+                if (invincibleCooldown <= 0) {
+                    invincible = false;
+                }
+            }
+
+            if (timestopCooldown > 0) {
+                timestopCooldown -= Time.deltaTime;
+            }
+
+            if (timeStop > 0 ) {
+                timeStop -= Time.deltaTime;
+            }
+
+            if (invincible) {
+                sr.color = new Color(1f,1f,1f,.5f);
+            } else {
+                sr.color = new Color(1f,1f,1f,1f);
+            }
+
+            if (knockbackCooldown > 0) {
+                knockbackCooldown -= Time.deltaTime;
+            }
+
+            if (attackCooldown > 0) {
+                attackCooldown -= Time.deltaTime;
             }
         }
 
-        if (timestopCooldown > 0) {
-            timestopCooldown -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space) && gc.currentState == GameController.GameState.Info) {
+            gc.currentState = GameController.GameState.Playing;
         }
-
-        if (timeStop > 0 ) {
-            timeStop -= Time.deltaTime;
-        }
-
-        if (invincible) {
-            sr.color = new Color(1f,1f,1f,.5f);
-        } else {
-            sr.color = new Color(1f,1f,1f,1f);
-        }
-
-        if (knockbackCooldown > 0) {
-            knockbackCooldown -= Time.deltaTime;
-        }
-
-        if (attackCooldown > 0) {
-            attackCooldown -= Time.deltaTime;
-        }
+        
 
     }
 
@@ -104,7 +115,7 @@ public class Player : MonoBehaviour
     }
 
     void detectTimeStop() {
-        if (upgrades[2] && timestopCooldown <= 0 && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))) {
+        if (upgrades[2] && timestopCooldown <= 0 && Input.GetKeyDown(KeyCode.Space)) {
             timestopCooldown = 15f;
             timeStop = 3f;
             // Vector3 dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -125,7 +136,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButton(0) && attackCooldown <= 0) {
             GameObject attackObject = Instantiate(attack, transform.position, Quaternion.identity) as GameObject;
             attackObject.GetComponent<Attack>().sharpened = upgrades[0];
-            attackCooldown = 0.45f;
+            attackCooldown = 0.4f;
 
         }
     }
@@ -133,8 +144,8 @@ public class Player : MonoBehaviour
     public void onHit(int damage, Vector3 hitDirection) {
         if (!invincible) {
             invincible = true;
-            invincibleCooldown = 1f;
-            knockbackCooldown = 0.3f;
+            invincibleCooldown = 0.7f;
+            
             health -= damage;
             Debug.Log(health);
 
@@ -142,10 +153,13 @@ public class Player : MonoBehaviour
                 die();
             }
 
-            Vector3 knockDirection = transform.position - hitDirection;
-            Debug.Log(knockDirection);
-            rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
+            
         }
+
+        knockbackCooldown = 0.3f;
+        Vector3 knockDirection = transform.position - hitDirection;
+        Debug.Log(knockDirection);
+        rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
         
     }
 

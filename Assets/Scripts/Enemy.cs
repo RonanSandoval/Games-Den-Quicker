@@ -12,10 +12,18 @@ public class Enemy : MonoBehaviour
     protected float invincibleCooldown;
 
     protected Player player;
+
+    public GameObject heartDrop;
     
 
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
+    protected AudioSource audio;
+
+    public AudioClip[] sounds;
+    public GameObject boom;
+
+    public Color boomColor;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -24,6 +32,7 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
 
     }
 
@@ -59,11 +68,16 @@ public class Enemy : MonoBehaviour
             Debug.Log(health);
 
             if (health <= 0) {
-                die();
+                audio.clip = sounds[1];
+                StartCoroutine(die());
+            } else {
+                audio.clip = sounds[0];
+                audio.Play();
             }
             if (knockable) {
                 knockback(hitDirection);
             }
+
         }
         
     }
@@ -74,7 +88,17 @@ public class Enemy : MonoBehaviour
         rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
     }
 
-    void die() {
+    IEnumerator die() {
+        GameObject ps = Instantiate(boom, transform.position, Quaternion.identity) as GameObject;
+        var main = ps.GetComponent<ParticleSystem>().main;
+        main.startColor = boomColor;
+        if (player.health < player.maxHealth && Random.Range(0, player.health + 1) < 1) {
+            Instantiate(heartDrop, transform.position, Quaternion.identity);
+        }
+        Destroy(GetComponent<Collider>());
+        GetComponent<SpriteRenderer>().enabled = false;
+        audio.Play();
+        yield return new WaitForSeconds(audio.clip.length);
         Destroy(gameObject);
     }
 

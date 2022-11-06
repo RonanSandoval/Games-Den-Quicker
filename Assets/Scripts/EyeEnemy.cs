@@ -26,8 +26,11 @@ public class EyeEnemy : Enemy
                 attackCooldown -= Time.deltaTime;
                 
             } else {
+                audio.clip = sounds[2];
+                audio.Play();
                 attackCooldown = attackTime + Random.Range(-0.3f, 0.3f);      
-                GameObject attackObject = Instantiate(attack, transform.position, transform.rotation) as GameObject;       
+                GameObject attackObject = Instantiate(attack, transform.position, transform.rotation) as GameObject;
+                attackObject.transform.parent = gameObject.transform.parent;
             }
             
         }

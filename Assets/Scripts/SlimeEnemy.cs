@@ -14,7 +14,7 @@ public class SlimeEnemy : Enemy
          if (!invincible && player.timeStop <= 0) {
             Vector3 moveDirection =  player.transform.position - transform.position;
             moveDirection.Normalize();
-            rb.velocity = moveDirection * Time.deltaTime * 500;
+            rb.velocity = moveDirection * 2;
 
             if (moveDirection.x > 0) {
                 sr.flipX = true;

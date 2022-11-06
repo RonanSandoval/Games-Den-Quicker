@@ -290,7 +290,6 @@ public class MapGenerator : MonoBehaviour
                             int variety = Random.Range(0,5);
                             if (variety == 0) {
                                 map[i,j].enemies.Add(new Entity(3.5f,3.5f,0));
-                                map[i,j].enemies.Add(new Entity(7f,6f, 0));
                                 map[i,j].enemies.Add(new Entity(3.5f,8.5f,0));
                                 map[i,j].enemies.Add(new Entity(10.5f,3.5f,0));
                                 map[i,j].enemies.Add(new Entity(10.5f,8.5f,0));

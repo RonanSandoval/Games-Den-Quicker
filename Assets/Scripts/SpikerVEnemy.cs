@@ -21,9 +21,9 @@ public class SpikerVEnemy : Enemy
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         if (Mathf.Abs(player.transform.position.y - transform.position.y) > 0.5f && player.timeStop <= 0) {
             if (player.transform.position.y - transform.position.y > 0) {
-                rb.velocity = new Vector3(0, Time.deltaTime * 2000, 0);
+                rb.velocity = new Vector3(0, 20, 0);
             } else {
-                rb.velocity = new Vector3(0, Time.deltaTime * -2000, 0);
+                rb.velocity = new Vector3(0, -20, 0);
             }
         }
 

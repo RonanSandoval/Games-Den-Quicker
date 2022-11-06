@@ -8,7 +8,7 @@ public class TileMaker : MonoBehaviour
     public Tilemap groundMap;
     public Tilemap wallMap;
 
-    public Tile floor;
+    public Tile[] floors;
     public Tile wall;
 
     public int roomWidth;
@@ -34,7 +34,12 @@ public class TileMaker : MonoBehaviour
 
         for (int x = scaledOffX; x < roomWidth + scaledOffX; x++) {
             for (int y = scaledOffY; y < roomHeight + scaledOffY; y++) {
-                groundMap.SetTile(new Vector3Int(x,y,0), floor);
+                if (Random.Range(0,15) < 14) {
+                    groundMap.SetTile(new Vector3Int(x,y,0), floors[0]);
+                } else {
+                    groundMap.SetTile(new Vector3Int(x,y,0), floors[Random.Range(1,5)]);
+                }
+                
             }
         } 
 
