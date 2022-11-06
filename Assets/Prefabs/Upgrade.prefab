@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 823929991920829051}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 57.11317, y: 14.56481, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 708723467
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.42121747, g: 0.4632486, b: 0.9622642, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d5382bf976432494c93c3fcee9d12c05, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,6 +97,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgradeType: 0
+  sprites:
+  - {fileID: 21300000, guid: d5382bf976432494c93c3fcee9d12c05, type: 3}
+  - {fileID: 21300000, guid: 07364c98c585eb548ad5c6c4830d7061, type: 3}
+  - {fileID: 21300000, guid: 4f5d8b7b80b554c4a932437f030ac7f9, type: 3}
 --- !u!61 &823929991920829048
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -224,8 +224,49 @@ public class MapGenerator : MonoBehaviour
     public void placeEnemies() {
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
-                if (map[i,j].level % 3 == 2) {
-                    map[i,j].enemies.Add(new Entity(3,3,1));
+                if (map[i,j].level % 3 == 2 || (map[i,j].level % 3 == 1 && map[i,j].layout == 7)) {
+                    
+                    switch (map[i,j].layout) {
+                        case 0:
+                            map[i,j].enemies.Add(new Entity(10.5f,3.5f, 4));
+                            map[i,j].enemies.Add(new Entity(3.5f,8.5f, 4));
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            int variety = Random.Range(0,5);
+                            if (variety == 0) {
+                                map[i,j].enemies.Add(new Entity(3.5f,3.5f,0));
+                                map[i,j].enemies.Add(new Entity(7f,6f, 0));
+                                map[i,j].enemies.Add(new Entity(3.5f,8.5f,0));
+                                map[i,j].enemies.Add(new Entity(10.5f,3.5f,0));
+                                map[i,j].enemies.Add(new Entity(10.5f,8.5f,0));
+                            } else if (variety == 1) {
+                                map[i,j].enemies.Add(new Entity(7f,6f, 1));
+                                map[i,j].enemies.Add(new Entity(3.5f,2.5f, 4));
+                                map[i,j].enemies.Add(new Entity(10.5f,9.5f, 4));
+                            } else if (variety == 2) {
+                                map[i,j].enemies.Add(new Entity(9.5f,3.5f, 4));
+                                map[i,j].enemies.Add(new Entity(4.5f,8.5f, 4));
+                                map[i,j].enemies.Add(new Entity(4.5f,3.5f, 5));
+                                map[i,j].enemies.Add(new Entity(9.5f,8.5f, 5));
+                            } else if (variety == 3) {
+                                map[i,j].enemies.Add(new Entity(9.5f,3.5f, 0));
+                                map[i,j].enemies.Add(new Entity(4.5f,8.5f, 0));
+                                map[i,j].enemies.Add(new Entity(5.5f,3.5f, 5));
+                                map[i,j].enemies.Add(new Entity(8.5f,8.5f, 5));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(3.5f,6.5f, 1));
+                                map[i,j].enemies.Add(new Entity(10.5f,5.5f, 1));
+                            }
+                            break;
+                    }
                 }
             }
         }
@@ -283,6 +324,7 @@ public class MapGenerator : MonoBehaviour
                 if ((map[i,j].level % 3 == 2 || map[i,j].level % 3 == 1) && map[i,j].level != 1 && map[i,j].layout != -1) {
 
                     int roomType = Random.Range(0,8);
+                    map[i,j].layout = roomType;
 
                     switch(roomType) {
                         case 0:
