@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public int playerSpeed;
 
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
 
     public int[] currentRoom;
 
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
 
         roomHeight = tileMaker.roomHeight;
         roomWidth = tileMaker.roomWidth;
@@ -59,6 +61,11 @@ public class Player : MonoBehaviour
     void move() {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
+        if (horizontalInput < 0) {
+            sr.flipX = true;
+        } else if (horizontalInput > 0) {
+            sr.flipX = false;
+        }
         rb.velocity = new Vector2(horizontalInput * playerSpeed, verticalInput * playerSpeed);
     }
 
