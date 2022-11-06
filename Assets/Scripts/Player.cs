@@ -22,8 +22,13 @@ public class Player : MonoBehaviour
     public int health;
     public bool[] upgrades;
 
+    public float speedCoeff;
+
     public bool invincible;
     float invincibleCooldown;
+
+    public float timestopCooldown;
+    public float timeStop;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +43,8 @@ public class Player : MonoBehaviour
 
         health = maxHealth;
         upgrades = new bool[]{false, false, false};
+        speedCoeff = 1f;
+        
     }
 
     // Update is called once per frame
@@ -48,7 +55,7 @@ public class Player : MonoBehaviour
         }   
         detectCurrentRoom();
         detectAttack();
-        detectDash();
+        detectTimeStop();
 
         if (invincibleCooldown > 0) {
             invincibleCooldown -= Time.deltaTime;
@@ -56,6 +63,21 @@ public class Player : MonoBehaviour
                 invincible = false;
             }
         }
+
+        if (timestopCooldown > 0) {
+            timestopCooldown -= Time.deltaTime;
+        }
+
+        if (timeStop > 0 ) {
+            timeStop -= Time.deltaTime;
+        }
+
+        if (invincible) {
+            sr.color = new Color(1f,1f,1f,.5f);
+        } else {
+            sr.color = new Color(1f,1f,1f,1f);
+        }
+
     }
 
     void move() {
@@ -66,17 +88,17 @@ public class Player : MonoBehaviour
         } else if (horizontalInput > 0) {
             sr.flipX = false;
         }
-        rb.velocity = new Vector2(horizontalInput * playerSpeed, verticalInput * playerSpeed);
+        rb.velocity = new Vector2(horizontalInput * playerSpeed * speedCoeff, verticalInput * playerSpeed * speedCoeff);
     }
 
-    void detectDash() {
-        if (upgrades[2] && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))) {
-            invincible = true;
-            invincibleCooldown = 0.3f;
-            Vector3 dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            dashDirection.z = 0.0f;
-            dashDirection.Normalize();
-            rb.AddForce(dashDirection * 60, ForceMode2D.Impulse);
+    void detectTimeStop() {
+        if (upgrades[2] && timestopCooldown <= 0 && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space))) {
+            timestopCooldown = 15f;
+            timeStop = 3f;
+            // Vector3 dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            // dashDirection.z = 0.0f;
+            // dashDirection.Normalize();
+            // rb.AddForce(dashDirection * 45, ForceMode2D.Impulse);
 
         }
         

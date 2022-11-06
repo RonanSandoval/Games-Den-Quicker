@@ -11,10 +11,16 @@ public class SlimeEnemy : Enemy
     }
 
     protected override void Update() {
-         if (!invincible) {
+         if (!invincible && player.timeStop <= 0) {
             Vector3 moveDirection =  player.transform.position - transform.position;
             moveDirection.Normalize();
             rb.velocity = moveDirection * Time.deltaTime * 500;
+
+            if (moveDirection.x > 0) {
+                sr.flipX = true;
+            } else {
+                sr.flipX = false;
+            }
         }
 
         base.Update();

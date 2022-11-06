@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     
 
     protected Rigidbody2D rb;
-
+    protected SpriteRenderer sr;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -23,6 +23,8 @@ public class Enemy : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         health = maxHealth;
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
@@ -35,6 +37,16 @@ public class Enemy : MonoBehaviour
             }
         }
         
+        Color myColor = new Color(1f,1f,1f,1f);
+        if (invincible) {
+            myColor.a = 0.5f;
+        }
+        if (player.timeStop > 0) {
+            myColor.b = 0f;
+        }
+
+        sr.color = myColor;
+
         
     }
 
@@ -66,7 +78,7 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "enemy") {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());

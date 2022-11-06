@@ -26,6 +26,7 @@ public class MapGenerator : MonoBehaviour
         public int level;
         public bool[] doors;
         public int barricadeDirection;
+        public int layout;
 
         public List<Entity> enemies;
         public List<Entity> things;
@@ -36,6 +37,7 @@ public class MapGenerator : MonoBehaviour
             enemies = new List<Entity>();
             things = new List<Entity>();
             barricadeDirection = -1;
+            layout = 0;
         }
 
         public Room() {
@@ -44,6 +46,7 @@ public class MapGenerator : MonoBehaviour
             enemies = new List<Entity>();
             things = new List<Entity>();
             barricadeDirection = -1;
+            layout = 0;
         }
     } 
 
@@ -76,8 +79,8 @@ public class MapGenerator : MonoBehaviour
         keyCoords = createBranchPoint(10);
         createPath(11, Random.Range(2,5), keyCoords);
 
-        placeEnemies();
         placeThings();
+        placeEnemies();
 
     }
 
@@ -222,8 +225,7 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
                 if (map[i,j].level % 3 == 2) {
-                    map[i,j].enemies.Add(new Entity(3,3,0));
-                    map[i,j].enemies.Add(new Entity(6.5f,3.5f, 3));
+                    map[i,j].enemies.Add(new Entity(3,3,1));
                 }
             }
         }
@@ -232,9 +234,6 @@ public class MapGenerator : MonoBehaviour
     public void placeThings() {
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
-                if (map[i,j].level % 3 == 2) {
-                    map[i,j].things.Add(new Entity(5,5,0));
-                }
                 // create barricades
                 if (map[i,j].level != 1 && map[i,j].level % 3 == 1) {
                     
@@ -243,6 +242,7 @@ public class MapGenerator : MonoBehaviour
 
                     // if a dodger...
                     if (barricadeType == 2) {
+                        map[i,j].layout = -1;
                         switch(barricadeDirection) {
                             case 0:
                                 map[i,j].enemies.Add(new Entity(6.5f,3.5f, 3));
@@ -277,6 +277,55 @@ public class MapGenerator : MonoBehaviour
                                 break;
                         }
                     }
+                }
+
+                // Create random obstacles
+                if ((map[i,j].level % 3 == 2 || map[i,j].level % 3 == 1) && map[i,j].level != 1 && map[i,j].layout != -1) {
+
+                    int roomType = Random.Range(0,8);
+
+                    switch(roomType) {
+                        case 0:
+                            map[i,j].things.Add(new Entity(4.5f,5.5f,0));
+                            map[i,j].things.Add(new Entity(4.5f,6.5f,0));
+                            map[i,j].things.Add(new Entity(9.5f,5.5f,0));
+                            map[i,j].things.Add(new Entity(9.5f,6.5f,0));
+                            break;
+                        case 1:
+                            map[i,j].things.Add(new Entity(2.5f,2.5f,0));
+                            map[i,j].things.Add(new Entity(2.5f,9.5f,0));
+                            map[i,j].things.Add(new Entity(11.5f,2.5f,0));
+                            map[i,j].things.Add(new Entity(11.5f,9.5f,0));
+                            break;
+                        case 2:
+                            for (int k = 4; k <= 9; k++) {
+                                map[i,j].things.Add(new Entity(k + 0.5f,3.5f,1));
+                                map[i,j].things.Add(new Entity(k + 0.5f,8.5f,1));
+                            }
+                            break;
+                        case 3:
+                            map[i,j].things.Add(new Entity(3.5f,4.5f,1));
+                            map[i,j].things.Add(new Entity(4.5f,4.5f,1));
+                            map[i,j].things.Add(new Entity(3.5f,7.5f,1));
+                            map[i,j].things.Add(new Entity(4.5f,7.5f,1));
+                            map[i,j].things.Add(new Entity(10.5f,4.5f,1));
+                            map[i,j].things.Add(new Entity(9.5f,4.5f,1));
+                            map[i,j].things.Add(new Entity(10.5f,7.5f,1));
+                            map[i,j].things.Add(new Entity(9.5f,7.5f,1));
+                            break;
+                        case 4:
+                            map[i,j].things.Add(new Entity(6.5f,5.5f,0));
+                            map[i,j].things.Add(new Entity(6.5f,6.5f,0));
+                            map[i,j].things.Add(new Entity(7.5f,5.5f,0));
+                            map[i,j].things.Add(new Entity(7.5f,6.5f,0));
+                            map[i,j].things.Add(new Entity(3.5f,5.5f,1));
+                            map[i,j].things.Add(new Entity(3.5f,6.5f,1));
+                            map[i,j].things.Add(new Entity(10.5f,5.5f,1));
+                            map[i,j].things.Add(new Entity(10.5f,6.5f,1));
+                            break;
+                            
+                    }
+
                 }
             }
         }

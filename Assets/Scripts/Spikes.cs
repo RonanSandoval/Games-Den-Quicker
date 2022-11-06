@@ -10,7 +10,17 @@ public class Spikes : MonoBehaviour
             Player player = collision.gameObject.GetComponent<Player>();
             if (!player.upgrades[1]) {
                 player.onHit(1, transform.position);
+            } else {
+                player.speedCoeff = 0.35f;
             }
+        }
+    }
+
+    private void OnTriggerExit2D (Collider2D collision) {
+        if (collision.gameObject.tag == "Player")
+        {
+                Player player = collision.gameObject.GetComponent<Player>();
+                player.speedCoeff = 1f;
         }
     }
 }
