@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
 
     public bool invincible;
     float invincibleCooldown;
+    float knockbackCooldown;
+    float attackCooldown;
 
     public float timestopCooldown;
     public float timeStop;
@@ -44,13 +46,15 @@ public class Player : MonoBehaviour
         health = maxHealth;
         upgrades = new bool[]{false, false, false};
         speedCoeff = 1f;
+
+        knockbackCooldown = 0f;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!invincible) {
+        if (knockbackCooldown <= 0f) {
             move();
         }   
         detectCurrentRoom();
@@ -76,6 +80,14 @@ public class Player : MonoBehaviour
             sr.color = new Color(1f,1f,1f,.5f);
         } else {
             sr.color = new Color(1f,1f,1f,1f);
+        }
+
+        if (knockbackCooldown > 0) {
+            knockbackCooldown -= Time.deltaTime;
+        }
+
+        if (attackCooldown > 0) {
+            attackCooldown -= Time.deltaTime;
         }
 
     }
@@ -110,26 +122,31 @@ public class Player : MonoBehaviour
     }
 
     void detectAttack() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0) && attackCooldown <= 0) {
             GameObject attackObject = Instantiate(attack, transform.position, Quaternion.identity) as GameObject;
             attackObject.GetComponent<Attack>().sharpened = upgrades[0];
+            attackCooldown = 0.45f;
 
         }
     }
 
     public void onHit(int damage, Vector3 hitDirection) {
-        invincible = true;
-        invincibleCooldown = 0.3f;
-        health -= damage;
-        Debug.Log(health);
+        if (!invincible) {
+            invincible = true;
+            invincibleCooldown = 1f;
+            knockbackCooldown = 0.3f;
+            health -= damage;
+            Debug.Log(health);
 
-        if (health <= 0) {
-            die();
+            if (health <= 0) {
+                die();
+            }
+
+            Vector3 knockDirection = transform.position - hitDirection;
+            Debug.Log(knockDirection);
+            rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
         }
-
-        Vector3 knockDirection = transform.position - hitDirection;
-        Debug.Log(knockDirection);
-        rb.AddForce(knockDirection * 20, ForceMode2D.Impulse);
+        
     }
 
     void die() {

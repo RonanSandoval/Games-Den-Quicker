@@ -136,7 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockable: 0
   damageable: 0
-  maxHealth: 4
+  maxHealth: 3
   health: 0
   attackTime: 2
   attack: {fileID: 3962530392407989825, guid: c7ea3512f04900e4d8002b84fe961171, type: 3}

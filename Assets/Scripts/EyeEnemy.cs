@@ -26,7 +26,7 @@ public class EyeEnemy : Enemy
                 attackCooldown -= Time.deltaTime;
                 
             } else {
-                attackCooldown = attackTime;      
+                attackCooldown = attackTime + Random.Range(-0.3f, 0.3f);      
                 GameObject attackObject = Instantiate(attack, transform.position, transform.rotation) as GameObject;       
             }
             

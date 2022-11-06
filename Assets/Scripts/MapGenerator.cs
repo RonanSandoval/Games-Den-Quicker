@@ -224,20 +224,67 @@ public class MapGenerator : MonoBehaviour
     public void placeEnemies() {
         for (int i = 0; i < maxMapHeight; i++) {
             for (int j = 0; j < maxMapWidth; j++) {
-                if (map[i,j].level % 3 == 2 || (map[i,j].level % 3 == 1 && map[i,j].layout == 7)) {
+                if (map[i,j].level % 3 == 2 || (map[i,j].level % 3 == 1 && map[i,j].layout >= 0 && map[i,j].level != 1)) {
                     
                     switch (map[i,j].layout) {
                         case 0:
-                            map[i,j].enemies.Add(new Entity(10.5f,3.5f, 4));
-                            map[i,j].enemies.Add(new Entity(3.5f,8.5f, 4));
+                            if (Random.Range(0,2) == 0) {
+                                map[i,j].enemies.Add(new Entity(7f,6f, 0));
+                                map[i,j].enemies.Add(new Entity(7f,7f, 0));
+                                map[i,j].enemies.Add(new Entity(7f,5f, 0));
+                                map[i,j].enemies.Add(new Entity(2.5f,6f, 4));
+                                map[i,j].enemies.Add(new Entity(11.5f,6f, 4));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(7f,6f, 1));
+                                map[i,j].enemies.Add(new Entity(3.5f,3.5f,0));
+                                map[i,j].enemies.Add(new Entity(10.5f,8.5f, 0));
+                                map[i,j].enemies.Add(new Entity(3.5f,8.5f,0));
+                                map[i,j].enemies.Add(new Entity(10.5f,3.5f,0));
+                            }
                             break;
                         case 1:
+                            if (Random.Range(0,2) == 0) {
+                                map[i,j].enemies.Add(new Entity(7f,2.5f, 5));
+                                map[i,j].enemies.Add(new Entity(7f,9.5f, 5));
+                                map[i,j].enemies.Add(new Entity(5.5f,6f, 0));
+                                map[i,j].enemies.Add(new Entity(8.5f,6f, 0));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(4.5f,4.5f, 4));
+                                map[i,j].enemies.Add(new Entity(7f,6f, 0));
+                                map[i,j].enemies.Add(new Entity(9.5f,7.5f, 1));
+                            }
                             break;
                         case 2:
+                            if (Random.Range(0,2) == 0) {
+                                map[i,j].enemies.Add(new Entity(4.5f,6f, 1));
+                                map[i,j].enemies.Add(new Entity(9.5f,6f, 1));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(10.5f,3.5f,5));
+                                map[i,j].enemies.Add(new Entity(3.5f,8.5f,5));
+                                map[i,j].enemies.Add(new Entity(7f,6f, 0));
+                            }
                             break;
                         case 3:
+                            if (Random.Range(0,2) == 0) {
+                                map[i,j].enemies.Add(new Entity(4f,2.5f,0));
+                                map[i,j].enemies.Add(new Entity(4f,9.5f,0));
+                                map[i,j].enemies.Add(new Entity(10f,2.5f,0));
+                                map[i,j].enemies.Add(new Entity(10f,9.5f,0));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(4f,2.5f,4));
+                                map[i,j].enemies.Add(new Entity(10f,9.5f,4));
+                            }
                             break;
                         case 4:
+                            if (Random.Range(0,2) == 0) {
+                                map[i,j].enemies.Add(new Entity(3.5f,3.5f,1));
+                                map[i,j].enemies.Add(new Entity(10.5f,8.5f, 1));
+                            } else {
+                                map[i,j].enemies.Add(new Entity(4.5f,4.5f,0));
+                                map[i,j].enemies.Add(new Entity(9.5f,7.5f, 0));
+                                map[i,j].enemies.Add(new Entity(4.5f,7.5f,0));
+                                map[i,j].enemies.Add(new Entity(9.5f,4.5f,0));
+                            }
                             break;
                         default:
                             int variety = Random.Range(0,5);
@@ -266,6 +313,15 @@ public class MapGenerator : MonoBehaviour
                                 map[i,j].enemies.Add(new Entity(10.5f,5.5f, 1));
                             }
                             break;
+                    }
+                }
+
+                if (map[i,j].layout == -1) {
+                    if (Random.Range(0,2) == 0) {
+                         map[i,j].enemies.Add(new Entity(7f,6f, 1));
+                    } else {
+                         map[i,j].enemies.Add(new Entity(5.5f,6f, 0));
+                          map[i,j].enemies.Add(new Entity(8.5f,6f, 0));
                     }
                 }
             }
@@ -376,13 +432,13 @@ public class MapGenerator : MonoBehaviour
 
     public void Print2DArray()
     {
-        for (int i = 0; i < map.GetLength(0); i++)
+        for (int i = map.GetLength(0) - 1; i >= 0; i--)
         {
             string line = "";
             for (int j = 0; j < map.GetLength(1); j++)
             {
                 //line += " " + map[i,j].doors[0] + "" + map[i,j].doors[1]+ "" + map[i,j].doors[2] + "" + map[i,j].doors[3];
-                line += " " + map[i,j].level;
+                line += " " + map[i,j].level + map[i,j].layout;
             }
             Debug.Log(line);
         }
