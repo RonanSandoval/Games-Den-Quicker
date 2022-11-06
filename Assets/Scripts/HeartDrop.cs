@@ -9,7 +9,7 @@ public class HeartDrop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lifespan = 5.0f;
+        lifespan = 8.0f;
     }
 
     // Update is called once per frame
@@ -27,8 +27,19 @@ public class HeartDrop : MonoBehaviour
             Player player = collision.gameObject.GetComponent<Player>();
             if(player.health < player.maxHealth) {
                 player.health += 1;
+                
+                StartCoroutine(heal());
+            } else {
+                Destroy (gameObject);
             }
-            Destroy (gameObject);
         }
+    }
+
+    IEnumerator heal() { 
+        GetComponent<AudioSource>().Play();
+        Destroy(GetComponent<Collider>());
+        GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
+        Destroy (gameObject);
     }
 }

@@ -11,10 +11,15 @@ public class Upgrade : MonoBehaviour
     
     private float rotator;
 
+    public AudioClip[] sounds;
+
+    GameController gc;
+
     // Start is called before the first frame update
     void Start()
     {
         sr = gameObject.GetComponent<SpriteRenderer>();
+        gc = GameObject.Find("GameController").GetComponent<GameController>();
 
         sr.sprite = sprites[upgradeType];
     }
@@ -34,17 +39,24 @@ public class Upgrade : MonoBehaviour
         {
             GameObject.Find("Info").GetComponent<Info>().currentImage = upgradeType;
             if (upgradeType == 3) {
-
+                GetComponent<AudioSource>().clip = sounds[1];
+                GetComponent<AudioSource>().Play();
+                gc.currentState = GameController.GameState.Win;
             } else {
                 Player player = collision.gameObject.GetComponent<Player>();
                 player.upgrades[upgradeType] = true;
                 GameObject.Find("GameController").GetComponent<GameController>().currentState = GameController.GameState.Info;
-                disappear();
+                StartCoroutine(disappear());
             }
         }
     }
 
-    void disappear() {
+    IEnumerator disappear() {
+        GetComponent<AudioSource>().clip = sounds[0];
+        GetComponent<AudioSource>().Play();
+        Destroy(GetComponent<Collider>());
+        GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(GetComponent<AudioSource>().clip.length);
         Destroy(gameObject);
     }
 }

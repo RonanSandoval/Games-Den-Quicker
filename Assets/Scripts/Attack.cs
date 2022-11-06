@@ -47,7 +47,12 @@ public class Attack : MonoBehaviour
         }
         else if (collision.gameObject.tag == "enemy")
         {
-            collision.GetComponent<Enemy>().onHit(1, transform.position);
+            if (sharpened && Random.Range(0,3) == 0) {
+                collision.GetComponent<Enemy>().onHit(2, transform.position);
+            } else {
+                collision.GetComponent<Enemy>().onHit(1, transform.position);
+            }
+            
             Destroy (gameObject);
         }
         else if (collision.gameObject.tag == "crate")

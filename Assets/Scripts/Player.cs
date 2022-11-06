@@ -32,6 +32,14 @@ public class Player : MonoBehaviour
     public float timestopCooldown;
     public float timeStop;
 
+    public GameObject boom;
+    public Color boomColor;
+
+    AudioSource audio;
+    public AudioClip[] sounds;
+
+    Animator anim;
+
     GameController gc;
 
     // Start is called before the first frame update
@@ -39,6 +47,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        audio = GetComponent<AudioSource>();
+        anim = GetComponent<Animator>();
         gc = GameObject.Find("GameController").GetComponent<GameController>();
 
         roomHeight = tileMaker.roomHeight;
@@ -75,6 +85,10 @@ public class Player : MonoBehaviour
 
             if (timestopCooldown > 0) {
                 timestopCooldown -= Time.deltaTime;
+                if (timestopCooldown <= 0) {
+                    audio.clip = sounds[2];
+                    audio.Play();
+                }
             }
 
             if (timeStop > 0 ) {
@@ -98,6 +112,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && gc.currentState == GameController.GameState.Info) {
             gc.currentState = GameController.GameState.Playing;
+            audio.clip = sounds[3];
+            audio.Play();
         }
         
 
@@ -111,6 +127,11 @@ public class Player : MonoBehaviour
         } else if (horizontalInput > 0) {
             sr.flipX = false;
         }
+        if (Mathf.Abs(horizontalInput) > 0 || Mathf.Abs(verticalInput) > 0) {
+            anim.SetBool("isWalking", true);
+        } else {
+            anim.SetBool("isWalking", false);
+        }
         rb.velocity = new Vector2(horizontalInput * playerSpeed * speedCoeff, verticalInput * playerSpeed * speedCoeff);
     }
 
@@ -118,6 +139,8 @@ public class Player : MonoBehaviour
         if (upgrades[2] && timestopCooldown <= 0 && Input.GetKeyDown(KeyCode.Space)) {
             timestopCooldown = 15f;
             timeStop = 3f;
+            audio.clip = sounds[1];
+            audio.Play();
             // Vector3 dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             // dashDirection.z = 0.0f;
             // dashDirection.Normalize();
@@ -147,7 +170,13 @@ public class Player : MonoBehaviour
             invincibleCooldown = 0.7f;
             
             health -= damage;
-            Debug.Log(health);
+            
+            audio.clip = sounds[0];
+            audio.Play();
+
+            GameObject ps = Instantiate(boom, transform.position, Quaternion.identity) as GameObject;
+            var main = ps.GetComponent<ParticleSystem>().main;
+            main.startColor = boomColor;
 
             if (health <= 0) {
                 die();
@@ -164,6 +193,8 @@ public class Player : MonoBehaviour
     }
 
     void die() {
-        Destroy(gameObject);
+        GameObject.Find("Info").GetComponent<Info>().currentImage = 4;
+        sr.enabled = false;
+        gc.currentState = GameController.GameState.Dead;
     }
 }

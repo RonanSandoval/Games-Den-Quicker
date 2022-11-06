@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b4656ff10855b54fa56f357040c7363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heartDrop: {fileID: 7225469383927510124, guid: da91c7f0931e0bb41b0201ff7cca11af, type: 3}
   boom: {fileID: 325786936423505587, guid: 076cc16405fee32469621edb44bf2453, type: 3}
   boomColor: {r: 0.72156864, g: 0.5764706, b: 0.41960788, a: 1}
 --- !u!61 &8446659093315450880
